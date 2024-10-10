@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Room</title>
+</head>
+<body>
+<h1>Add New Room</h1>
+<form action="/rooms" method="post">
+    Name: <input type="text" name="name"/><br/>
+    Booked_date: <input type="date" name="booked_date"/><br/>
+    Expired_date: <input type="date" name="expired_date"/><br/>
+    Status: <input type="text" name="status"/><br/>
+    <button type="submit">Submit</button>
+</form>
+<a href="/rooms">Back to List</a>
+</body>
+</html>
