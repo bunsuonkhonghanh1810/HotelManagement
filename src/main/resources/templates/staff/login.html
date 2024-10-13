@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./login/login.css" />
+    <link rel="shortcut icon" href="./login/logo.png" type="image/x-icon" />
+    <title>Roommaster</title>
+</head>
+
+<body>
+<main>
+    <div>
+        <img src="./login/logologin.png" alt="logo" />
+        <h1>Welcome!</h1>
+    </div>
+    <div>
+        <div>
+            <h2>Login to continue</h2>
+            <form th:action="@{/login}" method="post" autocomplete="off">
+                <label for="username">Tên tài khoản</label>
+                <input type="text" id="username" name="username">
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password">
+
+                <p th:text="${error}" style="color:#000000;"></p>
+
+                <input type="submit" value="Đăng nhập">
+                <a class="forgot-password" href="#">Quên mật khẩu</a>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>
