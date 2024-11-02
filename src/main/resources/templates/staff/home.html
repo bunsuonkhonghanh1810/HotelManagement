@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Roommaster</title>
+    <link rel="shortcut icon" href="./home/icon/logo.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./home/home.css" />
+
+</head>
+
+<body>
+    <header>
+        <a class="rmt" target="_blank" href="https://booking.muongthanh.com/">
+            <div class="nguoidung">
+                <img id="home-icon" src="./home/icon/home-icon.png" alt="home-icon" width="20px"/>
+                <b>Roommaster</b>
+            </div>
+        </a>
+        <a class="rmt" href="#">
+            <div class="login-admin">
+                <u class="adminlg">ADMIN, ROOMMASTER</u>
+                <img src="./home/icon/login-icon.png" alt="login-icon" width="20px" height="20px"/>
+            </div>
+        </a>
+    </header>
+
+    <div id="section">
+        <nav>
+            <ul class="ulnav">
+                <li class="linav">
+                    <a href="#" data-content="./home_func/dashboard/dashboard.html">
+                        <div class="navbarr dashboard-nav">
+                            <img class="imgnav" src="./home/icon/bangdieukhien-icon.png" alt="dashboard-icon" width="30px"/>
+                            <b>Bảng điều khiển</b>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="linav">
+                    <a href="#" data-content="./home_func/room_management/room_management.html">
+                        <div class="navbarr quanlyphong-nav">
+                            <img class="imgnav" src="./home/icon/quanlyphong-icon.png" alt="quanlyphong-icon" width="30px"/>
+                            <b>Quản lý phòng</b>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="linav">
+                    <a href="#" data-content="./home_func/booking_management/booking_management.html">
+                        <div class="navbarr quanlybooking-nav">
+                            <img class="imgnav" src="./home/icon/quanlybooking-icon.png" alt="quanlybooking-icon" width="30px"/>
+                            <b>Quản lý booking</b>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="linav">
+                    <a href="#" onclick="toggleDropdown(this)">
+                        <div class="navbarr dichvu-nav">
+                            <img class="imgnav" src="./home/icon/dichvu-icon.png" alt="dichvu-icon" width="30px"/>
+                            <b>Dịch vụ</b>
+                            <img class="arrow" src="./home/icon/chevron-down.png" alt="arrow" width="20px">
+                        </div>
+                    </a>
+                    <ul class="ulnav-child">
+                        <li class="linav linav-child">
+                            <a href="#">
+                                <div class="navbarr navbar-child">
+                                    <img class="imgnav" src="./home/icon/danhsachdichvu-icon.png" alt="danhsachdichvu-icon" width="30px"/>
+                                    <b>Danh sách dịch vụ</b>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="linav linav-child">
+                            <a href="#">
+                                <div class="navbarr navbar-child">
+                                    <img class="imgnav" src="./home/icon/kiemkenhapxuat-icon.png" alt="kiemkenhapxuat-icon" width="30px"/>
+                                    <b>Kiểm kê nhập xuất</b>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="linav">
+                    <a href="#">
+                        <div class="navbarr doanhthu-nav">
+                            <img class="imgnav" src="./home/icon/doanhthu-icon.png" alt="doanhthu-icon" width="30px"/>
+                            <b>Doanh thu</b>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="linav">
+                    <a href="#" data-content="./home_func/report/report.html">
+                        <div class="navbarr baocao-nav">
+                            <img class="imgnav" src="./home/icon/baocao-icon.png" alt="baocao-icon" width="30px"/>
+                            <b>Báo cáo</b>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="linav">
+                    <a href="#">
+                        <div class="navbarr chat-nav">
+                            <img class="imgnav" src="./home/icon/chat-icon.png" alt="chat-icon" width="30px"/>
+                            <b>Chat</b>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="linav">
+                    <a href="#">
+                        <div class="navbarr settings-nav">
+                            <img class="imgnav" src="./home/icon/settings-icon.png" alt="settings-icon" width="30px"/>
+                            <b>Cài đặt</b>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <main id="content_display"></main>
+    </div>
+
+    <script src="./home/home.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+body {
+    margin: 0 auto;
+    font-family: Arial, Helvetica, sans-serif;
+}
+header {
+    display: flex;
+    height: 50px;
+    width: 100%;
+    justify-content: space-between;
+    background-color: #262626;
+    color: #ffff;
+}
+.login-admin {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+}
+.login-admin .adminlg {
+    text-decoration: none;
+    margin-right: 10px;
+}
+.rmt {
+    color: #ffff;
+    text-decoration: none;
+    padding: 0px 20px;
+    align-content: center;
+}
+.ulnav {
+    background-color: #ffff;
+    list-style-type: none;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    float: left;
+    height: 100%;
+}
+.ulnav .linav a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    text-align: left;
+}
+.ulnav .linav a :hover {
+    background-color: #b0b0b0;
+    transition: background-color 0.4s;
+}
+.ulnav .linav .ulnav-child {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+.ulnav .linav .ulnav-child .linav-child a {
+    font-size: 14px;
+}
+.ulnav .linav.active .ulnav-child {
+    max-height: 130px;
+}
+.navbarr {
+    background-color: #f2f2f2;
+    height: 40px;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+}
+.imgnav {
+    padding-right: 10px;
+}
+.navbar-child {
+     background-color: #cacaca;
+     padding-left: 30px;
+}
+.arrow {
+    margin-left: auto;
+    padding: 0 10px;
+    transition: transform 0.4s ease;
+}
+.linav.active .arrow {
+    transform: rotate(180deg);
+}
+#section {
+    display: flex;
+    width: 100%;
+}
+nav {
+    width: 15%;
+}
+main {
+    width: 85%;
+}

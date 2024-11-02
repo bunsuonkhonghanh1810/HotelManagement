@@ -1,0 +1,120 @@
+<link rel="stylesheet" href="./home_func/booking_management/booking_management.css">
+
+<div id="booking_management">Quản lý booking</div>
+
+<div id="guest_container"></div>
+
+<script>
+    if (typeof allGuest === 'undefined') {
+        let allGuest = [];
+    }
+
+    function fetchGuest() {
+        fetch('/get-guests')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched data:', data);
+                allGuest = data;
+                displayGuest(allGuest);
+            })
+            .catch(error => console.error('Error fetching rooms:', error));
+    }
+
+    function displayGuest(guests) {
+        const guestContainer = document.getElementById('guest_container');
+
+        guestContainer.innerHTML = '';
+
+        guestContainer.innerHTML = `
+            <table id="guest-table">
+                <thead id="table_head"></thead>
+                <tbody id="table_body"></tbody>
+            </table>
+        `;
+
+        const tableHead = document.getElementById('table_head');
+        const tableBody = document.getElementById('table_body');
+
+        tableHead.innerHTML = `
+            <tr>
+                <th>ID</th>
+                <th>
+                    <p>Tên khách hàng</p>
+                    <p>Số điện thoại</p>
+                </th>
+                <th>Số phòng</th>
+                <th>
+                    <p>Loại phòng</p>
+                    <p>Giá phòng</p>
+                </th>
+                <th>
+                    <p>Ngày nhận phòng</p>
+                    <p>Ngày trả phòng</p>
+                </th>
+                <th>Thời gian đặt</th>
+                <th>Trạng thái</th>
+            </tr>
+        `;
+
+        guests.forEach(guest => {
+            const guestCard = document.createElement('tr');
+            guestCard.classList.add('guest-card');
+
+            guestCard.innerHTML = `
+                <td>${guest.id}</td>
+                <td>
+                    <p>${guest.guestName}</p>
+                    <p>${guest.guestPhone}</p>
+                </td>
+                <td>${guest.roomNumber}</td>
+                <td>
+                    <p>${guest.roomType}</p>
+                    <p>${guest.dailyPrice}</p>
+                </td>
+                <td>
+                    <p>${guest.checkInDate}</p>
+                    <p>${guest.checkOutDate}</p>
+                </td>
+                <td>
+                    <p>${guest.requestTime}</p>
+                </td>
+                <td class="booking_action">
+                    ${guest.status === 'Đã xác nhận' ?
+                        '<p style="color: #49A12B">Đã xác nhận</p>' :
+                        guest.status === 'Đã hủy' ?
+                            '<p style="color: #DE3B3B">Đã hủy</p>' : // Thêm điều kiện cho trạng thái "Đã hủy"
+                                `
+                                    <p class="confirm" onclick="updateGuestStatus(${guest.id}, 'Đã xác nhận')">Xác nhận</p>
+                                    <p class="decline" onclick="updateGuestStatus(${guest.id}, 'Đã hủy')">Hủy</p>
+                                `
+                    }
+                </td>
+
+            `;
+
+            tableBody.appendChild(guestCard); // Thêm roomCard vào roomContainer
+        });
+    }
+
+    fetchGuest();
+</script>
+
+<script>
+    function updateGuestStatus(guestId, status) {
+        fetch('/update-guest-status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                guestId: guestId,
+                status: status
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                fetchGuest();
+            })
+            .catch(error => console.error('Error updating guest status:', error));
+    }
+</script>

@@ -24,8 +24,18 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String redirectToHome() {
+    public String redirectToLogin() {
         return "redirect:/login";
+    }
+
+    @GetMapping("/home")
+    public String home() {
+        return "staff/home";
+    }
+
+    @GetMapping("/home_guest")
+    public String home_guest() {
+        return "guest/home_guest";
     }
 
     @PostMapping("/login")

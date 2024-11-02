@@ -1,35 +1,54 @@
+// src/main/java/com/hotel/controller/RoomController.java
 package com.hotel.controller;
 
+import com.hotel.model.Guest;
 import com.hotel.model.Room;
 import com.hotel.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.math.BigDecimal;
+import java.util.List;
+
+@RestController
 public class RoomController {
 
+    private final RoomRepository roomRepository;
+
     @Autowired
-    private RoomRepository roomRepository;
-
-    @GetMapping("/rooms")
-    public String listRooms(Model model) {
-        model.addAttribute("rooms", roomRepository.findAll());
-        return "room-list"; // trả về trang hiển thị danh sách phòng
+    public RoomController(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
     }
 
-    @GetMapping("/rooms/new")
-    public String newRoomForm() {
-        return "new-room"; // trả về trang nhập dữ liệu phòng mới
+    @GetMapping("/get-rooms")
+    public List<Room> getAllRooms() {
+        return roomRepository.findAll();
     }
 
-    @PostMapping("/rooms")
-    public String createRoom(@RequestParam String name, @RequestParam String booked_date, @RequestParam String expired_date, @RequestParam String status) {
-        Room room = new Room(name, booked_date, expired_date, status);
-        roomRepository.save(room);
-        return "redirect:/rooms";
+    @PostMapping("/update-room-status")
+    public ResponseEntity<String> updateRoomStatus(@RequestParam String roomNumber, @RequestParam String status) {
+        Room room = roomRepository.findByRoomNumber(roomNumber);
+
+        if (status.equals("Đã thuê")) {
+            room.setStatus(status);
+            roomRepository.save(room);
+        } else {
+            room.setStatus(status);
+            room.setCustomerName(null);
+            room.setCustomerPhone(null);
+            room.setCheckInTime(null);
+            room.setCheckOutTime(null);
+            room.setRoomFee(null);
+            room.setServices(null);
+            room.setServiceFee(BigDecimal.valueOf(0.0));
+            room.setTotalFee(null);
+            roomRepository.save(room);
+        }
+        
+        return ResponseEntity.ok("Cập nhật trạng thái thành công");
     }
 }

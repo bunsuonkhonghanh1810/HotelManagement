@@ -1,0 +1,427 @@
+<link rel="stylesheet" href="./home_func/room_management/room_management.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<div id="room_management">Quản lý phòng</div>
+
+<div id="filter_buttons">
+    <button class="Tất cả" data-filter="Tất cả">Tất cả</button>
+    <button class="Trống" data-filter="Trống">Trống</button>
+    <button class="Đã đặt" data-filter="Đã đặt">Đã đặt</button>
+    <button class="Đã thuê" data-filter="Đã thuê">Đã thuê</button>
+    <button class="Đến hạn" data-filter="Đến hạn">Đến hạn</button>
+    <button class="Đang sửa" data-filter="Đang sửa">Đang sửa</button>
+    <button class="Đang dọn" data-filter="Đang dọn">Đang dọn</button>
+</div>
+
+<div id="room_container"></div>
+
+<div id="overlay" onclick="overlay_off()">
+    <div id="overlay_content" style="font-family: 'Montserrat', sans-serif;"></div>
+</div>
+
+<script>
+    document.getElementById('overlay_content').addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+
+    function overlay_on() {
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function overlay_off() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("overlay_content").className = "";
+    }
+</script>
+
+<script>
+    function handleRoomClick(room) {
+        console.log(room.dailyPrice);
+
+        const overlayContent = document.getElementById('overlay_content');
+
+        if (room.status === 'Trống') {
+            overlayContent.innerHTML = `
+                <p>Đặt phòng ${room.roomNumber}</p>
+                <div style="display: flex; padding: 0;">
+                    <div style="display: flex; padding: 0">
+                        <form id="guestform" action="/add_guest" method="post">
+                            <div>
+                                <label for="customer_name">Khách hàng: </label>
+                                <input type="text" id="customer_name" name="guestName">
+                            </div>
+
+                            <div>
+                                <label for="customer_phone">Số điện thoại: </label>
+                                <input type="text" id="customer_phone" name="guestPhone">
+                            </div>
+
+                            <div>
+                                <label for="customer_email">Email: </label>
+                                <input type="text" id="customer_email" name="guestEmailAddress">
+                            </div>
+
+                            <div style="display: none !important;">
+                                <input type="hidden" name="roomType" value="${room.roomType}">
+                            </div>
+
+                            <div>
+                                <label for="indate">Check in: </label>
+                                <input type="date" id="indate" name="indate" required>
+                                <input type="time" id="intime" name="intime" value="14:00">
+                            </div>
+
+                            <div>
+                                <label for="outdate">Check out: </label>
+                                <input type="date" id="outdate" name="outdate">
+                            </div>
+
+                            <div style="display: none !important;">
+                                <input type="hidden" name="roomNumber" value="${room.roomNumber}">
+                            </div>
+
+                            <div style="display: none !important;">
+                                <input type="hidden" name="dailyPrice" value="${room.dailyPrice}">
+                            </div>
+
+                            <div style="display: none !important;">
+                                <input type="hidden" name="status" value="Đã xác nhận">
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; padding: 0; margin-top: 10px">
+                                <button type="button" class="func_button Đang dọn" data-func="Dọn phòng" data-roomNumber="${room.roomNumber}">Dọn phòng</button>
+                                <button type="button" class="func_button Đang sửa" data-func="Sửa phòng" data-roomNumber="${room.roomNumber}">Sửa phòng</button>
+                                <button type="submit">Thêm khách</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; padding: 20px; font-size: 20px">
+                        <img width="100%" height="auto" src="${room.imagePath}" alt="Thầy Luân đẹp trai">
+                        <p style="margin: 20px 0 0 0">${room.roomType}</p>
+                        <p style="font-weight: bold; margin: 10px 0;">Giá: <span style="color: #FFBD59;">${room.dailyPrice} VNĐ/đêm</span></p>
+                    </div>
+                </div>
+
+
+            `;
+
+            const today1 = new Date().toISOString().split("T")[0];
+            document.getElementById("indate").value = today1;
+
+            const now = new Date();
+            const today2 = now.toISOString().split("T")[0];
+
+            let outdateValue;
+            if (now.getHours() >= 14) {
+                const tomorrow = new Date(now);
+                tomorrow.setDate(now.getDate() + 1);
+                outdateValue = tomorrow.toISOString().split("T")[0];
+            } else {
+                outdateValue = today2;
+            }
+
+            document.getElementById("outdate").value = outdateValue;
+
+            function validateForm() {
+                const name = document.getElementById("customer_name").value;
+                const phone = document.getElementById("customer_phone").value;
+                const email = document.getElementById("customer_email").value;
+                const errors = [];
+
+                function StringMatch(value, reg) {
+                    return reg.test(value);
+                }
+
+                if (!name) {
+                    errors.push("Điền cái tên vào ?");
+                } else if (!phone) {
+                    errors.push("Ai dạy mày để trống sđt ?");
+                } else if (!StringMatch(phone, /^(?:\+84|0)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5]|9[0-9])\d{7}$/)) {
+                    errors.push("Nhập lại sđt cho đúng đi ?");
+                } else if (!email) {
+                    errors.push("Ai dạy mày để trống email ?");
+                } else if (!StringMatch(email, /^[^\s@]+@gmail\.com$/)) {
+                    errors.push("Nhập lại email cho đúng đi ?");
+                }
+
+                if (errors.length > 0) {
+                    alert(errors.join("\n"));
+                    return false;
+                }
+                return true;
+            }
+
+            document.getElementById('guestform').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (!validateForm()) {
+                    return;
+                }
+
+                const now = new Date();
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
+                const requestTime = now.toLocaleString('sv-SE', options).replace(',', ' ');
+                const requestTimeInput = document.createElement("input");
+                requestTimeInput.type = "hidden";
+                requestTimeInput.name = "requestTime";
+                requestTimeInput.value = requestTime;
+                this.appendChild(requestTimeInput);
+
+                const checkinDate = document.getElementById('indate').value;
+                const checkinTime = document.getElementById('intime').value;
+                const checkinDateTime = checkinDate + ' ' + checkinTime;
+                const datetimeInput = document.createElement('input');
+                datetimeInput.type = 'hidden';
+                datetimeInput.name = 'checkInDate';
+                datetimeInput.value = checkinDateTime;
+                this.appendChild(datetimeInput);
+
+                const checkoutDate = document.getElementById('outdate').value;
+                const checkoutTime = '12:00';
+                const checkoutDateTime = checkoutDate + ' ' + checkoutTime;
+                const timedateInput = document.createElement('input');
+                timedateInput.type = 'hidden';
+                timedateInput.name = 'checkOutDate';
+                timedateInput.value = checkoutDateTime;
+                this.appendChild(timedateInput);
+
+                const roomFee = calculateRoomFee();
+                const roomfeeInput = document.createElement('input');
+                roomfeeInput.type = 'hidden';
+                roomfeeInput.name = 'roomFee';
+                roomfeeInput.value = roomFee;
+                this.appendChild(roomfeeInput);
+
+                fetch('/add_guest', {
+                    method: 'POST',
+                    body: new FormData(this)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text();
+                        }
+                        throw new Error('Lỗi');
+                    })
+                    .then(data => {
+                        return fetch('/get-rooms');
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        allRooms = data;
+                        displayRooms(allRooms);
+
+                        overlay_off();
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+        }else if (room.status === 'Đang sửa' || room.status === 'Đang dọn'){
+            overlayContent.innerHTML = `
+                <p>Thông tin phòng ${room.roomNumber}</p>
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 20px; font-size: 20px">
+                    <img width="100%" height="auto" src="${room.imagePath}" alt="Thầy Luân đẹp trai">
+                    <p style="margin: 20px 0 0 0">${room.roomType}</p>
+                    <p style="font-weight: bold; margin: 20px 0;">Giá: <span style="color: #FFBD59;">${room.dailyPrice} VNĐ/đêm</span></p>
+                    <button style="width: 200px" class="func_button" data-func="Hoàn thành" data-roomNumber="${room.roomNumber}">Hoàn thành</button>
+                </div>
+            `
+        }else if (room.status === 'Đã đặt'){
+            overlayContent.innerHTML = `
+                <p>Thông tin phòng ${room.roomNumber}</p>
+                <div style="padding: 20px;" id="guest_info">
+                    <p>Khách hàng: ${room.customerName}</p>
+                    <div style="display: flex">
+                        <p>Nhận phòng: ${room.checkInTime}</p>
+                        <p>Trả phòng: ${room.checkOutTime}</p>
+                    </div>
+                    <div style="display: flex">
+                        <p>Loại phòng: ${room.roomType}</p>
+                        <p>Giá: ${room.dailyPrice} VNĐ</p>
+                    </div>
+                    <div>
+                        <p>Tiền phòng: ${room.roomFee} VNĐ</p>
+                    </div>
+
+                    <div>
+                        <button style="background-color: #FF0000;" class="func_button " data-func="Hủy phòng" data-roomNumber="${room.roomNumber}">Hủy phòng</button>
+                        <button style="background-color: #399918;" class="func_button" data-func="Check in" data-roomNumber="${room.roomNumber}">Check in</button>
+                    </div>
+                </div>
+            `
+        } else {
+            overlayContent.innerHTML = `
+                <p>Thông tin phòng ${room.roomNumber}</p>
+                <div id="guest_info">
+                    <p>Khách hàng: ${room.customerName}</p>
+                    <div>
+                        <p>Nhận phòng: ${room.checkInTime}</p>
+                        <p>Trả phòng: ${room.checkOutTime}</p>
+                    </div>
+                    <div>
+                        <p>Loại phòng: ${room.roomType}</p>
+                        <p>Giá: ${room.dailyPrice} VNĐ</p>
+                    </div>
+                    <div>
+                        <p>Tiền phòng: ${room.roomFee}</p>
+                    </div>
+                    <div>
+                        <p></p>
+                    </div>
+                </div>
+                ${room.status === 'Đã đặt' ?
+                `<button class="func_button" data-func="Hủy phòng" data-roomNumber="${room.roomNumber}">Hủy phòng</button>
+                     <button class="func_button" data-func="Check in" data-roomNumber="${room.roomNumber}">Check in</button>` :
+                `
+                            <button class="func_button" data-func="Check out">Check out</button>
+                        `
+            }
+            `;
+        }
+
+        overlay_on();
+
+        document.querySelectorAll("#overlay_content .func_button").forEach(button => {
+            button.addEventListener("click", function(event) {
+                const func = button.getAttribute("data-func");
+                const rn = button.getAttribute("data-roomNumber");
+
+                handleFuncButton(func, rn);
+            });
+        });
+    }
+
+
+    function calculateRoomFee() {
+        const checkInDate = new Date(document.querySelector('input[name="checkInDate"]').value);
+        const checkOutDate = new Date(document.querySelector('input[name="checkOutDate"]').value);
+
+        const checkInTime = new Date(checkInDate);
+        checkInTime.setHours(14, 0, 0);
+        const freeCheckInTime = new Date(checkInDate);
+        freeCheckInTime.setHours(12, 1, 0);
+
+        const roomFeePerNight = parseFloat(document.querySelector('input[name="dailyPrice"]').value);
+
+        let nights = 0;
+
+        if (checkInDate < freeCheckInTime) {
+            nights = 1 + Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+        } else if (checkInDate >= freeCheckInTime && checkInDate < checkInTime) {
+            nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+        } else if (checkInDate >= checkInTime) {
+            nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)) + 1;
+        }
+
+        const totalFee = nights * roomFeePerNight;
+
+        return totalFee;
+    }
+</script>
+
+<script>
+    if (typeof allRooms === 'undefined') {
+        let allRooms = [];
+    }
+
+    function fetchRooms() {
+        fetch('/get-rooms')
+        .then(response => response.json())
+        .then(data => {
+            allRooms = data;
+            displayRooms(allRooms);
+        })
+        .catch(error => console.error('Error fetching rooms:', error));
+    }
+
+    function displayRooms(rooms) {
+        const roomContainer = document.getElementById('room_container');
+
+        roomContainer.innerHTML = '';
+
+        rooms.forEach(room => {
+            const roomCard = document.createElement('div');
+            roomCard.classList.add('room-card');
+
+            roomCard.innerHTML = `
+                <div class="room_number ${room.status}"></div>
+                <div class="customer_info ${room.status}"></div>
+            `;
+
+            const roomNumber = roomCard.querySelector('.room_number');
+            const customerInfo = roomCard.querySelector('.customer_info');
+
+            roomNumber.innerHTML = `
+                <p>${room.roomNumber}</p>
+            `;
+
+            customerInfo.innerHTML = `
+                <p class="room_type">${room.roomType}</p>
+                <p class="customer_name">${room.ten}</p>
+            `;
+
+            roomCard.addEventListener('click', function() {
+                let temp;
+                temp = `${room.status}`.replace(/\s+/g, "-");
+                document.getElementById('overlay_content').classList.add(temp);
+                handleRoomClick(room);
+            });
+
+            roomContainer.appendChild(roomCard);
+        });
+    }
+
+    function filterRooms(status) {
+        if (status === 'Tất cả') {
+            displayRooms(allRooms);
+        } else {
+            const filteredRooms = allRooms.filter(room => room.status === status);
+            displayRooms(filteredRooms);
+        }
+    }
+
+    document.getElementById('filter_buttons').addEventListener('click', function(event) {
+        const button = event.target;
+        if (button.tagName === 'BUTTON') {
+            const filter = button.getAttribute('data-filter');
+            filterRooms(filter);
+        }
+    });
+
+    fetchRooms();
+</script>
+
+<script>
+    function handleFuncButton(func, rn) {
+        let temp = '';
+
+        if (func === 'Dọn phòng') {
+            temp = 'Đang dọn';
+        } else if (func === 'Sửa phòng') {
+            temp = 'Đang sửa';
+        } else if (func === 'Hủy phòng' || func === 'Check out') {
+            temp = 'Trống';
+        } else if (func === 'Check in') {
+            temp = 'Đã thuê';
+        } else if (func === 'Hoàn thành') {
+            temp = 'Trống';
+        }
+
+        fetch('/update-room-status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                roomNumber: rn,
+                status: temp
+            })
+        })
+            .then(response => response.text())
+            .then(data => {
+                fetchRooms();
+                overlay_off();
+            })
+            .catch(error => console.error('Error updating guest status:', error));
+    }
+</script>

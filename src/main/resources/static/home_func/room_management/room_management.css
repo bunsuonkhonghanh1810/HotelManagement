@@ -1,0 +1,231 @@
+#room_management {
+    text-align: center;
+    font-size: 18px;
+    font-family: "Oswald", sans-serif;
+    font-weight: 700;
+    color: #FFFFFF;
+    padding: 10px 0;
+    width: 100%;
+    background: rgb(233,203,75);
+    background: linear-gradient(90deg, rgba(233,203,75,1) 0%, rgba(225,183,58,1) 16.6%, rgba(192,139,27,1) 33.3%, rgba(185,117,8,1) 50%, rgba(192,139,27,1) 66.6%, rgba(225,183,58,1) 83.3%, rgba(233,203,75,1) 100%);
+}
+#room_container {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-auto-rows: 80px;
+    gap: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 10px;
+    padding-bottom: 20px;
+}
+#filter_buttons {
+    padding: 20px 0;
+}
+button {
+    font-family: "Oswald", sans-serif;
+    font-weight: 400;
+    color: #000000;
+    width: 100px;
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
+    margin-left: 5px;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.Tất.cả {
+    margin-left: 10px;
+    background-color: #FFFFFF;
+}
+.Trống {
+    background-color: #399918;
+}
+.Đã.đặt {
+    background-color: #C5FFB2;
+}
+.Đến.hạnm {
+    background-color: #FF0000;
+}
+.Đã.đặt {
+    background-color: #FFFD4F;
+}
+.Đã.thuê {
+    background-color: #FF9900;
+}
+.Đang.sửa {
+    background-color: #4BB9F9;
+}
+.Đang.dọn {
+    background-color: #FFCFCF;
+}
+button.Tất.cả:hover {
+    background-color: #E6E6E6; /* Màu đậm hơn của #FFFFFF */
+}
+button.Trống:hover {
+    background-color: #2E7C13; /* Màu đậm hơn của #399918 */
+}
+button.Đã.đặt:hover {
+    background-color: #A7D999; /* Màu đậm hơn của #C5FFB2 */
+}
+button.Đến.hạn:hover {
+    background-color: #CC0000; /* Màu đậm hơn của #FF9900 */
+}
+button.Đã.đặt:hover {
+    background-color: #E8E246;
+}
+button.Đã.thuê:hover {
+    background-color: #E68500; /* Màu đậm hơn của #FFFD4F */
+}
+button.Đang.sửa:hover {
+    background-color: #3A93C7; /* Màu đậm hơn của #4BB9F9 */
+}
+button.Đang.dọn:hover {
+    background-color: #E6A3A3; /* Màu đậm hơn của #FFCFCF */
+}
+.room-card {
+    display: flex;
+}
+.room_number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25%;
+    height: 100%;
+    border-radius: 5px 0 0 5px;
+}
+.customer_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+    height: 100%;
+    border-radius: 0 5px 5px 0;
+}
+.room_number > p {
+    font-size: 20px;
+    font-weight: 900;
+}
+.customer_info > p {
+    margin: 0;
+}
+.customer_info.Trống > .customer_name, .customer_info.Đang.sửa > .customer_name, .customer_info.Đang.dọn > .customer_name {
+    display: none;
+}
+.customer_info.Trống {
+    background-color: rgba(57, 153, 24, 0.5); /* Màu xanh lục với opacity */
+}
+.customer_info.Đã.đặt {
+    background-color: rgba(197, 255, 178, 0.5); /* Màu xanh nhạt với opacity */
+}
+.customer_info.Đến.hạn {
+    background-color: rgba(204, 0, 0, 0.5); /* Màu cam với opacity */
+}
+.customer_info.Đã.đặt {
+    background-color: rgba(255, 253, 79, 0.5);
+}
+.customer_info.Đã.thuê {
+    background-color: rgba(255, 153, 0, 0.5); /* Màu vàng với opacity */
+}
+.customer_info.Đang.sửa, .func_button.Đang.sửa {
+    background-color: rgba(75, 185, 249, 0.5); /* Màu xanh dương với opacity */
+}
+.customer_info.Đang.dọn, .func_button.Đang.dọn {
+    background-color: rgba(255, 207, 207, 0.8); /* Màu hồng nhạt với opacity */
+}
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 3;
+    cursor: pointer;
+}
+#overlay_content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    z-index: 4;
+    font-family: 'Montserrat', sans-serif;
+}
+#overlay_content.Trống {
+    width: 800px;
+}
+#overlay_content.Trống form {
+    padding: 20px;
+    font-size: 23px;
+}
+#overlay_content.Trống div {
+    padding-bottom: 10px;
+}
+#overlay_content.Trống div label {
+    display: inline-block;
+    width: 160px;
+}
+#overlay_content.Trống div input {
+    display: inline-block;
+    width: 240px;
+    height: 40px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+
+    background-image: linear-gradient(-180deg, #FFF 0%, #ECF1F5 100%);
+    border: 1px solid #B5BDC9;
+    border-radius: 3px;
+    transition: 0.4s border-color;
+}
+#overlay_content.Trống div input[id='indate'], #overlay_content.Trống div input[id='intime'] {
+    width: 116px;
+}
+#overlay_content.Trống div input[id='intime'] {
+    margin-left: 8px;
+}
+form div {
+    display: flex;
+    align-items: center;
+}
+
+#overlay_content.Trống div input:hover, #overlay_content.Trống div input:focus {
+    outline: 0;
+    border-color: #000;
+    color: #000;
+}
+#overlay_content.Trống div input[type='date'], #overlay_content.Trống div input[type='time'] {
+    padding: 5px;
+}
+#overlay_content.Đang-sửa, #overlay_content.Đang-dọn, #overlay_content.Đã-đặt {
+    width: 600px;
+}
+#overlay_content.Đang-sửa > p, #overlay_content.Đang-dọn > p, #overlay_content.Trống > p, #overlay_content.Đã-đặt > p {
+    border-radius: 10px 10px 0 0;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+#overlay_content.Đang-sửa > p, #overlay_content.Đang-sửa button {
+    background-color: #4BB9F9;
+}
+#overlay_content.Đang-dọn > p, #overlay_content.Đang-dọn button {
+    background-color: #FFCFCF;
+}
+#overlay_content.Trống > p {
+    background-color: #399918;
+}
+#overlay_content.Đã-đặt > p {
+    background-color: #FFFD4F;
+}
