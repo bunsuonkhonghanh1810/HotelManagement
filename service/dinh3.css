@@ -1,0 +1,164 @@
+body{
+    background-color: #a5a1a1;
+}
+header {
+    width: 100%;
+    height: 90px;
+    background-color: #f8f8f8;
+    display: flex;
+    position: fixed;
+    z-index: 4;
+    top: 0;
+  }
+  .contact {
+    width: 30%;
+    padding-top: 40px;
+  }
+  .contact a {
+    float: right;
+  }
+  /* tel */
+  .contact-info a {
+    text-decoration: none;
+    padding: 5px 10px 0 10px;
+    color: #2c2c2c;
+  }
+  .contact-info {
+    display: inline;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  /* facebook, youtube */
+  .social-icons {
+    display: inline;
+  }
+  .social-icons a {
+    font-size: 24px;
+    margin: 0 5px;
+    text-decoration: none;
+  }
+  /* Logo Roommaster */
+  .div-img-logo {
+    width: 40%;
+  }
+  .img-logo {
+    display: flex;
+    margin: 0 auto;
+    max-width: 150px;
+  }
+  /* Người dùng đăng nhập */
+  .login {
+    width: 30%;
+    padding: 45px 0 0 0px;
+    text-align: center;
+  }
+  .login a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #2c2c2c;
+  }
+  
+.grid-container {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    height: 100%;
+    width:auto;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #363333;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 70vh;
+    margin: 50px auto 0 auto;
+    
+
+}
+
+.carousel-cell{
+    display: none;
+}
+.is-selected{
+    display: block;
+}
+
+.grid-left, .grid-right {
+    position: relative;
+}
+.carousel-main {
+    width: 100%;
+    height: 400px;
+}
+
+.carousel-main img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 0; /* Thêm dòng này để bỏ khoảng trống */
+}
+
+.carousel-nav img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.carousel-nav .is-nav-selected img {
+    border: 2px solid #000;
+}
+
+/* Phần mô tả bên phải */
+.grid-right {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.title-service {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.list-service {
+    margin-top: 20px;
+}
+
+.item-service {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.item-service img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.title {
+    font-weight: bold;
+}
+.flickity-slider{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    padding: 20px;
+  }
+  .carousel-nav{
+    display: flex;
+    padding: 10px;
+  }
