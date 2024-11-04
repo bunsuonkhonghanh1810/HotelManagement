@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -65,9 +65,11 @@
     </div>
     <!-- Người dùng đăng nhập -->
     <div class="login">
-        <a href="#" onclick="redirectToLogin()"
-        ><div id="lgname">
-            <i class="fas fa-user-circle"></i> Đăng nhập
+        <a href="#" onclick="redirectToLogin()">
+        <div id="lgname">
+            <i class="fas fa-user-circle"></i>
+            <span th:if="${session.username != null}" th:text="${session.username}">Người dùng</span>
+            <span th:unless="${session.username != null}">Đăng nhập</span>
         </div></a
         >
     </div>
@@ -579,7 +581,7 @@
                         <img src="./home_guest/image/the-planer.jpg" alt="Card 01" />
                     </div>
                     <div class="card-text">
-                        <h3>The Planer</h3>
+                        <h3>The Planner</h3>
                         <b>Vị trí: </b>
                         <i>Tầng 3</i><br />
                         <b>Sức chứa: </b>
@@ -943,7 +945,7 @@
 <script>
     function redirectToLogin() {
         // Gửi yêu cầu GET đến /login
-        window.location.href = '/login';
+        window.location.href = '/sign_in';
     }
 </script>
 </body>
