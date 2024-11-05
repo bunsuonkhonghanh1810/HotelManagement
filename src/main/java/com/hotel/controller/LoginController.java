@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,16 +26,16 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
     @GetMapping("/home_guest")
     public String home_guest() {
         return "guest/home_guest";
     }
 
     @GetMapping("/sign_in")
-    public String sign_in() {return "guest/sign_in";}
+    public String sign_in(HttpSession session) {
+        session.invalidate();
+        return "guest/sign_in";
+    }
 
     @GetMapping("/sign_up")
     public String sign_up() {return "guest/sign_up";}
@@ -45,22 +44,21 @@ public class LoginController {
     public String sign_in(@RequestParam("email") String email,
                           @RequestParam("password") String password,
                           HttpSession session) {
-        System.out.println("hehe");
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (passwordEncoder.matches(password, user.getPassword())) {
-                System.out.println("ngu");
-
+            if (user.getPassword().equals(password)) {
+                session.setAttribute("role", "user");
                 session.setAttribute("userName", user.getFirstName() + " " + user.getLastName());
+
                 return "redirect:/home_guest";
             }
         }
 
-        System.out.println("óc chó");
         session.setAttribute("signInError", "Sai tài khoản hoặc mật khẩu");
         return "redirect:/sign_in";
     }
+
 
     @PostMapping("/sign_up")
     public String sign_up(@RequestParam("firstName") String firstName,
@@ -68,7 +66,6 @@ public class LoginController {
                           @RequestParam("email") String email,
                           @RequestParam("password") String password,
                           HttpSession session) {
-        System.out.println("hihi");
         try {
             userService.registerUser(firstName, lastName, email, password);
 

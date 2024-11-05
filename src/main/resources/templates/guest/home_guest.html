@@ -68,8 +68,8 @@
         <a href="#" onclick="redirectToLogin()">
         <div id="lgname">
             <i class="fas fa-user-circle"></i>
-            <span th:if="${session.username != null}" th:text="${session.username}">Người dùng</span>
-            <span th:unless="${session.username != null}">Đăng nhập</span>
+            <span th:if="${session.userName != null}" th:text="${session.userName}"></span>
+            <span th:unless="${session.userName != null}">Đăng nhập</span>
         </div></a
         >
     </div>
@@ -944,7 +944,6 @@
 <script src="./home_guest/script.js"></script>
 <script>
     function redirectToLogin() {
-        // Gửi yêu cầu GET đến /login
         window.location.href = '/sign_in';
     }
 </script>

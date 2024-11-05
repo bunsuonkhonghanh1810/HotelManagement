@@ -4,6 +4,7 @@ package com.hotel.controller;
 import com.hotel.model.Guest;
 import com.hotel.model.Room;
 import com.hotel.repository.RoomRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class RoomController {
     }
 
     @GetMapping("/get-rooms")
-    public List<Room> getAllRooms() {
+    public List<Room> getAllRooms(HttpSession session) {
         return roomRepository.findAll();
     }
 
