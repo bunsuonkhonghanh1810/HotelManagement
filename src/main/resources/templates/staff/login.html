@@ -20,11 +20,11 @@
             <h2>Login to continue</h2>
             <form th:action="@{/login}" method="post" autocomplete="off">
                 <label for="username">Tên tài khoản</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="email">
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password">
 
-                <p th:text="${error}" style="color:#000000;"></p>
+                <p th:text="${session.signInError}" style="color:#000000; text-align: center"></p>
 
                 <input type="submit" value="Đăng nhập">
                 <a class="forgot-password" href="#">Quên mật khẩu</a>
