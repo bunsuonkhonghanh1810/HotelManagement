@@ -32,11 +32,11 @@ function loadContent(page) {
 document.addEventListener('click', function (e) {
     const anchor = e.target.closest('a');
     if (anchor && anchor.hasAttribute('data-content')) {
-        e.preventDefault(); // Sửa ở đây, sử dụng e để ngăn hành động mặc định
+        e.preventDefault();
         const page = anchor.getAttribute('data-content');
         loadContent(page);
     }
 });
 document.addEventListener("DOMContentLoaded", function () {
-    loadContent('./home_func/dashboard/dashboard.html'); // fetch trang mặc định
+    loadContent('./home_func/dashboard/dashboard.html');
 });

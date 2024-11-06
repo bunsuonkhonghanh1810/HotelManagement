@@ -38,7 +38,10 @@ public class LoginController {
         session.invalidate();
         return "guest/sign_in";
     }
-
+//    @GetMapping("/home_guest/room_booking")
+//    public String homeGuestRoomBooking() {
+//        return "guest/room_booking";
+//    }
     @GetMapping("/sign_up")
     public String sign_up() {return "guest/sign_up";}
 
